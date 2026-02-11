@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Shosh 💘</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#ff9a9e,#fad0c4,#fbc2eb);
+font-family:'Poppins',sans-serif;
+overflow:hidden;
+}
+
+.card{
+background:rgba(255,255,255,0.18);
+backdrop-filter:blur(20px);
+padding:35px 25px;
+border-radius:28px;
+text-align:center;
+width:90%;
+max-width:400px;
+color:white;
+box-shadow:0 15px 40px rgba(0,0,0,0.25);
+position:relative;
+z-index:2;
+}
+
+h1{
+font-family:'Great Vibes',cursive;
+font-size:30px;
+min-height:70px;
+margin-bottom:25px;
+}
+
+.buttons{
+position:relative;
+height:170px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:20px;
+}
+
+button{
+padding:13px 25px;
+border:none;
+border-radius:50px;
+font-size:15px;
+cursor:pointer;
+width:210px;
+transition:0.2s ease;
+}
+
+#yesBtn{
+background:white;
+color:#ff4d6d;
+font-weight:600;
+}
+
+#yesBtn:hover{
+transform:scale(1.1);
+}
+
+#noBtn{
+background:#ff4d6d;
+color:white;
+position:absolute;
+}
+
+/* Confetti */
+.confetti{
+position:fixed;
+width:10px;
+height:10px;
+top:-10px;
+opacity:0.9;
+animation:fall linear forwards;
+z-index:1;
+}
+
+@keyframes fall{
+to{
+transform:translateY(100vh) rotate(720deg);
+opacity:0;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+<h1 id="typing"></h1>
+
+<div class="buttons" id="buttonArea">
+<button id="yesBtn">Yes, of course 💖</button>
+<button id="noBtn">No</button>
+</div>
+</div>
+
+<script>
+
+/* ========== TYPING EFFECT (SAFE) ========== */
+const text = "My shosh, will you be my valentine? 💘";
+const typingElement = document.getElementById("typing");
+let i = 0;
+
+function typeWriter(){
+if(i < text.length){
+typingElement.textContent += text.charAt(i);
+i++;
+setTimeout(typeWriter, 50);
+}
+}
+typingElement.textContent = "";
+typeWriter();
+
+/* ========== RUNNING NO BUTTON (FIXED) ========== */
+const noBtn = document.getElementById("noBtn");
+const buttonArea = document.getElementById("buttonArea");
+
+/* Initial position */
+function setInitialPosition(){
+const areaRect = buttonArea.getBoundingClientRect();
+noBtn.style.left = (areaRect.width/2 - noBtn.offsetWidth/2) + "px";
+noBtn.style.top = "90px";
+}
+setTimeout(setInitialPosition, 100);
+
+function moveNo(){
+const areaRect = buttonArea.getBoundingClientRect();
+const maxX = areaRect.width - noBtn.offsetWidth;
+const maxY = areaRect.height - noBtn.offsetHeight;
+
+const randomX = Math.random() * maxX;
+const randomY = Math.random() * maxY;
+
+noBtn.style.left = randomX + "px";
+noBtn.style.top = randomY + "px";
+}
+
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("click", function(e){
+e.preventDefault();
+moveNo();
+});
+noBtn.addEventListener("touchstart", function(e){
+e.preventDefault();
+moveNo();
+}, {passive:false});
+
+/* ========== CONFETTI BURST (CLEAN) ========== */
+function confettiBurst(){
+for(let i=0;i<120;i++){
+const conf=document.createElement("div");
+conf.className="confetti";
+conf.style.left=Math.random()*100+"vw";
+conf.style.background=["#ff4d6d","#ff85a2","#ffc2d1","#ff99cc"][Math.floor(Math.random()*4)];
+conf.style.animationDuration=(Math.random()*2+2)+"s";
+conf.style.width=(Math.random()*8+6)+"px";
+conf.style.height=conf.style.width;
+document.body.appendChild(conf);
+setTimeout(()=>conf.remove(),4000);
+}
+}
+
+/* ========== YES BUTTON ========== */
+document.getElementById("yesBtn").addEventListener("click",function(){
+
+confettiBurst();
+
+document.querySelector(".card").innerHTML=`
+<h1 style="font-family:'Great Vibes',cursive;font-size:34px;">
+She said YES! 💍✨
+</h1>
+<p style="margin-top:12px;font-size:15px;">
+Applications are now closed — position filled by the love of my life 😌💘
+</p>
+<p style="margin-top:8px;font-size:14px;">
+Tell Rini she's invited 🥂💞
+</p>
+<img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
+style="width:100%;border-radius:18px;margin-top:18px;">
+`;
+
+/* IMPORTANT: use full international format WITHOUT + */
+const yourNumber = "254799702732"; 
+const message = encodeURIComponent("I said YESSS 😌💘");
+
+setTimeout(()=>{
+window.location.href = "https://wa.me/" + yourNumber + "?text=" + message;
+},8000);
+
+});
+
+</script>
+
+</body>
+</html>
